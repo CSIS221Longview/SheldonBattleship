@@ -1,4 +1,5 @@
-
+/*Still in progress. Trying to figure out an efficient way to name/place ships and reduce code copying from my get(boards)
+methods of the different board sizes.*/ 
 import java.security.SecureRandom;
 
 public class gameboard
