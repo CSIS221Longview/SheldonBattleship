@@ -1,6 +1,6 @@
 /*Main file to run the game.  
  * This will call the actiongame.java file to run.*/
-import java.util.Scanner;
+<code>import java.util.Scanner;
 
 public class battleship
 {
@@ -14,3 +14,4 @@ public class battleship
 		
 	}
 }
+</code>
