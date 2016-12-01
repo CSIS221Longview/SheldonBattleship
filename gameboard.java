@@ -15,13 +15,13 @@ public class gameboard
 	// Array of ships
 	initializeShips[] SHIPS = new initializeShips();
 	
-	// Array of Difficulty Levels/Missiles
+	// Array of Difficulty Levels/Missiles and the Board
 	private int[] BEGINNER = {6, 30};
 	private int[] STANDARD = {9, 50};
 	private int[] ADVANCED = {12, 75};
+	private int[][] BOARD;
 	
 	// Variables
-	private int[][] BOARD;
 	private int difficulty, size, missiles, hits, misses;
 	private int shipsLeft = 5;
 	private double accuracy; // Going to be hits / missiles fired (2 decimal places)
@@ -200,5 +200,6 @@ public class gameboard
 	//Randomly place ships on grid
 	public placeShips()
 	{
+		//TO DO
 	}
 }
