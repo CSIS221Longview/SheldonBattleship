@@ -1,104 +1,200 @@
-/*Still in progress. Trying to figure out an efficient way to name/place ships and reduce code copying from my get(boards)
-methods of the different board sizes.*/ 
-import java.security.SecureRandom;
+/*Still in progress. Trying to figure out an efficient way to place ships.*/ 
+import java.util.Random;
+import java.util.Scanner;
 
 public class gameboard
 {
+	Random rand = new Random();
+	Scanner input = new Scanner(System.in);
 	
-	//The five different ships and their lengths.
-	private static final int AIRCRAFT_CARRIER = 5;
-	private static final int BATTLESHIP = 4;
-	private static final int DESTROYER = 3;
-	private static final int SUBMARINE = 3;
-	private static final int PATROL = 2;
+	// CONSTANTS
+	//private final static int EMPTY_HIT = 6;
+	//private final static int OCCUPIED = 7;
+	//private final static int OCCUPIED_HIT = 8;
 	
-	//Array of ships
-	private static final int[] SHIPS = {AIRCRAFT_CARRIER, BATTLESHIP, DESTROYER, SUBMARINE, PATROL};
+	// Array of ships
+	initializeShips[] SHIPS = new initializeShips();
 	
-	//variables
-	private static String[][] beginner = new String[6][6]; //6x6 (beginner)
-	private static String[][] standard = new String[9][9]; //9x9 (standard)
-	private static String[][] advanced = new String[12][12]; //12x12 (advanced)
-	private static SecureRandom rand = new SecureRandom();
+	// Array of Difficulty Levels/Missiles
+	private int[] BEGINNER = {6, 30};
+	private int[] STANDARD = {9, 50};
+	private int[] ADVANCED = {12, 75};
 	
-	//constructor
-	public gameboard(int[] SHIPS, String[][] beginner, String[][] standard, String[][] advanced)
+	// Variables
+	private int[][] BOARD;
+	private int difficulty, size, missiles, hits, misses;
+	private int shipsLeft = 5;
+	private double accuracy; // Going to be hits / missiles fired (2 decimal places)
+	
+	// Get player's difficulty
+	public void getDifficulty()
 	{
-		this.beginner = beginner;
-		this.standard = standard;
-		this.advanced = advanced;
-	}
-	
-	//ship names
-	private String shipName()
-	{
+		difficulty = input.nextInt();
 		
+		// Check for Valid input.
+		while (difficulty != 1 && difficulty != 2 && difficulty != 3)
+		{
+			System.out.print("\nWhy would you enter something other than 1-3?\n"
+					+ "\nChoose your difficulty(1-3): ");
+			difficulty = input.nextInt();
+		}
+		
+		//Set Difficulty
+		switch(difficulty)
+		{
+			case 1:
+			   System.out.println("\nPerhaps you are not as strong as the Emporer thought...\n");
+			   size = BEGINNER[0];
+			   missiles = BEGINNER[1];
+			   break;
+			case 2:
+			   System.out.println("\nDo, or do not. There is no try.\n");
+			   size = STANDARD[0];
+			   missiles = STANDARD[1];
+			  break;
+			case 3:
+			   System.out.println("\nThe Force is strong with this one.\n");
+			   size = ADVANCED[0];
+			   missiles = ADVANCED[1];
+			   break;
+		}
+		
+		setBoard();
 	}
 	
-	//create Beginner board
-	public static void setBeginnerBoard()
+	// Initialize method for setting ships
+	public class initializeShips
 	{
- 	 for (int r = 0; r < beginner.length; r++)
+		public String name = "";
+		public String leter = "";
+		public int length = 0;
+		public int value = 0;
+		
+		public String getName()
 		{
-			for (int c = 0; c < beginner[0].length; c++)
-			{	
-				beginner[r][c] = "~ ";
-				System.out.print(beginner[r][c]);
-			}
-			System.out.println();
+			return name;
+		}
+		
+		public String getLetter()
+		{
+			return letter;
+		}
+		
+		public int getLength()
+		{
+			return length;
+		}
+		
+		public int getValue()
+		{
+			return value;
 		}
 	}
 	
-	//get Beginner board 
-	public String[][] getBeginnerBoard()
+	//Set all SHIPS using initialize method
+	public void setShips()
 	{
-		return beginner;
+		SHIPS[0] = new initializeShips();
+		SHIPS[1] = new initializeShips();
+		SHIPS[2] = new initializeShips();
+		SHIPS[3] = new initializeShips();
+		SHIPS[4] = new initializeShips();
+		
+		SHIPS[0].name = "DEATH STAR";       // Aircraft Carrier name
+		SHIPS[1].name = "MILLINEUM FALCON"; // Battleship name
+		SHIPS[2].name = "STAR DESTROYER";   // Destroyer name
+		SHIPS[3].name = "SITH INFILTRATOR"; // Submarine name
+		SHIPS[4].name = "TIE FIGHTER";      // Patrol Boat name
+		
+		SHIPS[0].value = 5;
+		SHIPS[1].value = 4;
+		SHIPS[2].value = 4;
+		SHIPS[3].value = 3;
+		SHIPS[4].value = 2;
+		
+		SHIPS[0].letter = "A"; // Aircraft Carrier symbol - DEATH STAR
+		SHIPS[1].letter = "B"; // Battleship symbol - MILLINEUM FALCON
+		SHIPS[2].letter = "D"; // Destroyer symbol - STAR DESTROYER
+		SHIPS[3].letter = "S"; // Submarine symbol - SITH INFILTRATOR
+		SHIPS[4].letter = "P"; // Patrol boat symbol - TIE FIGHTER
+		
+		SHIPS[0].value = 1;
+		SHIPS[1].value = 2;
+		SHIPS[2].value = 3;
+		SHIPS[3].value = 4;
+		SHIPS[4].value = 5;
 	}
 	
-	//create Standard board
-	public static void setStandardBoard()
+	// Used to print Row letters on board
+	public char getRowLetters(int i)
 	{
-		for (int r = 0; r < standard.length; r++)
+		return (char) (i + 64);
+	}
+	
+	// Get size of board _x_
+	public int getSize()
+	{
+		return this.size;
+	}
+	
+	// Set board size.
+	public void setBoard()
+	{
+		this.BOARD = new int [size][size];
+	}
+	
+	// Get missile count
+	public int getMissiles()
+	{
+		return this.missiles;
+	}
+	
+	// Initialize board to empty.
+	public void initializeBoard()
+	{
+		for (int row = 0; row < getSize(); row++)
 		{
-			for (int c = 0; c < standard[0].length; c++)
-			{	
-				standard[r][c] = "~ ";
-				System.out.print(standard[r][c]);
-			}
-			System.out.println();
+			for (int col = 0; col < getSize(); col++)
+				BAORD[row][col] = -1;
 		}
 	}
 	
-	
-	//get Standard board
-	public String[][] getStandardBoard()
+	// Print the board
+	public void printBoard()
 	{
-		return standard;
-	}
-	
-	//create Advanced board
-	public static void setAdvancedBoard()
-	{
-		for (int r = 0; r < advanced.length; r++)
+		char empty = '~';
+		char miss = 'X';
+		getDifficulty();
+		initializeBoard();
+		
+		// Keep track of missiles, ships left, and accuracy.
+		System.out.printf("BOARD SIZE = %d%x%d%nMISSILES LEFT = %d%nSHIPS LEFT = %d%n",//YOUR ACCURACY = %d%n",
+			getSize(), getSize(),
+			getMissiles(), this.shipsLeft);//, this.accuracy); Commented out for now until I figure out how to calculate accuracy.
+		System.out.println();
+		System.out.print("\n  ");
+		
+		// Print Column Numbers
+		for (int i = 0; i < getSize(); i++)
+			System.out.printf("%4d", i + 1);
+		
+		for (row = 0; row < getSize(); row++)
 		{
-			for (int c = 0; c < advanced[0].length; c++)
-			{	
-				advanced[r][c] = "~ ";
-				System.out.print(advanced[r][c]);
+			System.out.print("\n");
+			
+			// Print Row Letters
+			System.out.printf("%3c", getRowLetters(row + 1));
+			
+			for (int col = 0; col < getSize(); col++)
+			{
+				if (BOARD[row][col] == -1)
+					System.out.printf("%3c", empty);
+				if (BOARD[row][col] == 0)
+					System.out.printf("%3c", miss);
+				System.out.print("|");
 			}
 			System.out.println();
 		}
-	}
-	
-	//get Advanced board
-	public String[][] getAdvancedBoard()
-	{
-		return advanced;
-	}
-
-	//select difficulty level (beginner, standard, or advanced)
-	public boolean difficultyLevel()
-	{
 	}
 	
 	//Randomly place ships on grid
