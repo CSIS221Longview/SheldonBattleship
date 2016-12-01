@@ -3,44 +3,35 @@
 import java.util.Scanner;
 
 public class actiongame
-{	
-
-	gameboard board = new gameboard(int[] SHIPS, String[][] beginner, String[][] standard, String[][] advanced);
-	/*^^ why is this object giving me errors?????
-  "Exception in thread "main" java.lang.Error: Unresolved compilation problems: 
-	Syntax error on token "]", :: expected after this token
-	Duplicate field actiongame.String
-	Syntax error on token "]", :: expected after this token
-	Syntax error on token "]", :: expected after this token
-	Duplicate field actiongame.String
-	Syntax error on token "]", :: expected after this token
-	Return type for the method is missing
-
-	at actiongame.<init>(actiongame.java:8)
-	at battleship.main(battleship.java:7)"*/
-  
+{
+	gameboard board = new gameboard();
 	Scanner input = new Scanner(System.in);
 	
-	//variables
-	private boolean win = false;
-	private int missileCount = 0;
 	
-	//constructor
-	public actiongame(boolean win, int missileCount)
-	{
-		this.win = win;
-		this.missileCount = missileCount;
-	}
+	// Variables
+	boolean win = false;
 	
-	//intro to the game
+	
+	// Intro to the Game.
 	public void menuIntro()
 	{
-		
+		System.out.println("  **********************************");
+		System.out.println("  *      ********************      *");
+		System.out.println("  *      STAR WARS BATTLESHIP!     *");
+		System.out.println("  *      ********************      *");
+		System.out.println("  **********************************");
+		System.out.println("\nSelect your difficulty Level\n");
+		System.out.println("  **********************************");
+		System.out.println("1 - Jedi PADAWAN - 6x6 - 30 Missiles");
+		System.out.println("2 - Jedi KNIGHT  - 9x9 - 50 Missiles");
+		System.out.println("3 - Jedi MASTER - 12x12 - 75 Missiles");
+		System.out.println("  **********************************");
+		System.out.printf("\nChoose your difficulty (1-3): ");
 	}
 	
-	//player guess locations
+	// Player guess Ship locations
 	public guess()
 	{
-		
+		//TO DO
 	}
 }
