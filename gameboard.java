@@ -91,7 +91,7 @@ public class gameboard
 		}
 	}
 	
-	//Set all SHIPS using initialize method
+	//Set all SHIPS using initialize class (method inspiration from Nick)
 	public void setShips()
 	{
 		SHIPS[0] = new initializeShips();
@@ -125,7 +125,7 @@ public class gameboard
 		SHIPS[4].value = 5;
 	}
 	
-	// Used to print Row letters on board
+	// Used to print Row letters on board (method inspiration from Adam)
 	public char getRowLetters(int i)
 	{
 		return (char) (i + 64);
