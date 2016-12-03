@@ -8,9 +8,7 @@ public class battleship
 	{
 		Scanner input = new Scanner(System.in);
 		actiongame game = new actiongame();
-		gameboard board = new gameboard();
-		game.menuIntro();
-		board.printBoard();
+		game.runGame();
 		
 	}
 }
